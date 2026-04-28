@@ -23,14 +23,14 @@ func Regis(c fiber.Ctx) error {
 	hashPass, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	user.Password = string(hashPass)
 
-	user.CreatedAt = time.Now()
-	user.UpdatedAt = time.Now()
-
 	if err := config.DB.Create(&user).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"message": "gagal menyimpan data ke database",
 		})
 	}
+
+	user.Password = ""
+
 	return c.Status(201).JSON(fiber.Map{
 		"message": "berhasil registrasi",
 		"data":    user,
@@ -95,7 +95,11 @@ func CreateCourse(c fiber.Ctx) error {
 			"message": "input tidak valid",
 		})
 	}
-	config.DB.Create(&course)
+	if err := config.DB.Create(&course).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"message": "gagal menyimpan ke database",
+		})
+	}
 	return c.Status(201).JSON(fiber.Map{
 		"message": "berhasil membuat",
 		"data":    course,
