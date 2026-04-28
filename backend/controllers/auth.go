@@ -23,8 +23,8 @@ func Regis(c fiber.Ctx) error {
 	hashPass, _ := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 	user.Password = string(hashPass)
 
-	user.CreateAt = time.Now()
-	user.UpdateAt = time.Now()
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
 
 	if err := config.DB.Create(&user).Error; err != nil {
 		return c.Status(500).JSON(fiber.Map{

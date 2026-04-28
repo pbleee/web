@@ -1,60 +1,43 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 // user
 type User struct {
-	ID       uint           `gorm:"primaryKey"`
-	Nama     string         `gorm:"type:varchar(100);not null"`
-	Email    string         `gorm:"type:varchar(100);unique;not null"`
-	Password string         `gorm:"type:varchar(255);not null"`
-	CreateAt time.Time      `gorm:"autoCreateTime" json:"create_at"`
-	UpdateAt time.Time      `gorm:"autoUpdateTime" json:"update_at"`
-	DeleteAt gorm.DeletedAt `gorm:"index" json:"delete_at"`
+	gorm.Model
+	Nama     string `gorm:"type:varchar(100);not null" json:"nama"`
+	Email    string `gorm:"type:varchar(100);unique;not null" json:"email"`
+	Password string `gorm:"type:varchar(255);not null" json:"-"`
 }
 
 // course
 type Course struct {
-	ID        uint           `gorm:"primaryKey"`
-	Judul     string         `gorm:"type:varchar(100);not null"`
-	Deskripsi string         `gorm:"type:text"`
-	CreateAt  time.Time      `gorm:"autoCreateTime" json:"create_at"`
-	UpdateAt  time.Time      `gorm:"autoUpdateTime" json:"update_at"`
-	DeleteAt  gorm.DeletedAt `gorm:"column:delete_at;index" json:"delete_at"`
+	gorm.Model
+	Judul     string `gorm:"type:varchar(100);not null" json:"judul"`
+	Deskripsi string `gorm:"type:text" json:"deskripsi"`
 }
 
 // enrollment
 type Enrollment struct {
-	ID       uint           `gorm:"primaryKey"`
-	UserID   uint           `gorm:"not null"`
-	CourseID uint           `gorm:"not null"`
-	CreateAt time.Time      `gorm:"column:create_at"`
-	UpdateAt time.Time      `gorm:"column:update_at"`
-	DeleteAt gorm.DeletedAt `gorm:"column:delete_at;index"`
+	gorm.Model
+	UserID   uint `gorm:"not null" json:"user_id"`
+	CourseID uint `gorm:"not null" json:"course_id"`
 }
 
 // Module
 type Module struct {
-	ID       uint           `gorm:"primaryKey"`
-	CourseID uint           `gorm:"not null"`
-	Judul    string         `gorm:"type:varchar(255);not null"`
-	Konten   string         `gorm:"type:text"`
-	CreateAt time.Time      `gorm:"column:create_at"`
-	UpdateAt time.Time      `gorm:"column:update_at"`
-	DeleteAt gorm.DeletedAt `gorm:"column:delete_at;index"`
+	gorm.Model
+	CourseID uint   `gorm:"not null" json:"course_id"`
+	Judul    string `gorm:"type:varchar(255);not null" json:"judul"`
+	Konten   string `gorm:"type:text" json:"konten"`
 }
 
 // score
 type Grade struct {
-	ID       uint           `gorm:"primaryKey"`
-	UserID   uint           `gorm:"not null"`
-	ModuleID uint           `gorm:"not null"`
-	Score    float64        `gorm:"type:decimal(5,2)"`
-	CreateAt time.Time      `gorm:"column:create_at"`
-	UpdateAt time.Time      `gorm:"column:update_at"`
-	DeleteAt gorm.DeletedAt `gorm:"column:delete_at;index"`
+	gorm.Model
+	UserID   uint    `gorm:"not null" json:"user_id"`
+	ModuleID uint    `gorm:"not null" json:"module_id"`
+	Score    float64 `gorm:"type:decimal(5,2)" json:"score"`
 }
